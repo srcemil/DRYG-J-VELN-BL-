@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="C:\Helix\2019 - 2020 (Åk 2)\Allmän programmering\Starship\JsGameFramework\Starship\style.css">
+	</head>
+	<body onLoad="initialize()">
+		<canvas id="myCanvas" width="900" height="600" style="border:10px solid #000000" ></canvas>
+		<div style="text-align: center">
+			<h1>DRYG JÄVELN BLÅ</h1>
+     <input value="colorpicker" type="text" name="" id="colorpick"> <!-- Egen colorpicker, koppla med getelementbyid -->
+      <input value="colorpicker" type="color" name="" id="color">
+			<progress id="health" value="100" max="100"></progress>
+			<button onclick= "document.documentElement.requestFullscreen()" >Fullscreen!</button>
+			<button onclick= "document.getElementById('myCanvas').requestFullscreen()" >GAME Fullscreen!</button>
+    </div>
+		<script src="input_control.js"></script>
+		<!--******** BEGIN Starship game ********-->
+		<script src="Starship/enemy.js"></script>
+		<script src="Starship/LaserShot.js"></script>
+		<script src="Starship/Ship.js"></script>
+		<!--******** END Starship game **********-->
+		<script src="game.js"></script>
+	</body>
+</html>
