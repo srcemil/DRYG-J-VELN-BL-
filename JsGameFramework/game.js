@@ -53,8 +53,6 @@ var quote = '"';
 var pCpause = "press " + quote + "p" + quote + " to pause the game"; // Hitta inge bättre, det funkar iallafall
 var pauseG = "The game is paused"
 var winScreen = "You win!"
-var gOver = "Game over!";
-var pressF5 = "Press F5 to restart";
 var score = 0; // Förutom den här som håller nummer
 var enemyHp = 1000;
 
