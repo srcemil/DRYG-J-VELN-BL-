@@ -49,8 +49,7 @@ var gAppStepCount;			// Räknare för antal iterationer som spel-loopen genomgå
 var pEnter = "Press Enter to Start";
 var pCmove = "WASD - move";
 var pCshoot = "Space - shoot";
-var quote = '"';
-var pCpause = "press " + quote + "p" + quote + " to pause the game"; // Hitta inge bättre, det funkar iallafall
+var pCpause = "press \"p\" to pause the game"; // HITTA något bättre
 var pauseG = "The game is paused"
 var winScreen = "You win!"
 var score = 0; // Förutom den här som håller nummer
