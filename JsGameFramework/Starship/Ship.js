@@ -30,16 +30,20 @@ class Ship
 	// Skeppets tillstånd uppdateras.
 	//==========================================================================
 	update() {
+		/*
+		Du kanske undrar varför vi använder oss av bara if satser istället för else if.
+		Vi kollar alla samtidigt för att vi vill att skeppet även kan röra sig diagonalt.
+		*/
 
 		// Agera på tangenttryckningar
 		if (gKeysDown[gKeyCodes.LEFT] == true) {
-			if(this.x - 4 > 1){ // Kollar om skeppets x värde är mer än 35
-				this.x -= 4;      // Förflytta skeppet åt vänster
+			if(this.x - 4 > 1){ 		  // Kollar om skeppets x värde är mer än 35
+				this.x -= 4;      	  // Förflytta skeppet åt vänster
 			};
 		}
 		if (gKeysDown[gKeyCodes.RIGHT] == true) {
 			if(this.x + 4 < gGameWidth - 35){ // Kollar om skeppets x är mer än canvas bredden
-				this.x += 4;										// Förflytta skeppet åt höger
+				this.x += 4;	          // Förflytta skeppet åt höger
 			};
 		}
 
@@ -81,12 +85,12 @@ class Ship
 	draw(ctx)
 	{
 		// Rita skeppet som en kvadrat och färglägg den
-		ctx.beginPath();
-		ctx.rect(this.x, this.y, 35, 35);
-		ctx.closePath();
-		var color = document.getElementById("color").value;
-		ctx.fillStyle = color;
-		ctx.fill();
+		ctx.beginPath(); 				    // Börjar rita Skeppet
+		ctx.rect(this.x, this.y, 35, 35);		    // Ritar ut en rektangel på skeppets x och y position med bredd och höjd 35
+		ctx.closePath();			       	    // Slutar rita
+		var color = document.getElementById("color").value; // Färgen väljs av spelaren med hjälp av våran color picker
+		ctx.fillStyle = color;				    // Säger till programmet att den ska fylla med den färg spelaren valt
+		ctx.fill();					    // Fyller rektangeln med färgen spelaren valt
 
 		// Visa alla laserskott i canvas
 		for (var i = 0; i < this.laserPool.length; i++) {
