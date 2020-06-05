@@ -20,7 +20,15 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Tangenter som används för att styra spelprogrammet
-const gKeyCodes = {NONE : 0, PMENU : 80, LEFT : 65, RIGHT : 68, UP : 87, DOWN : 83, ENTER : 13, SPACE : 32,};
+const gKeyCodes = {
+	NONE : 0,			// Ingen knapp
+	PMENU : 80, 			// Tangenten P
+	LEFT : 65,			// Tangenten A
+	RIGHT : 68,			// Tangenten D
+	UP : 87,			// Tangenten W
+	DOWN : 83,			// Tangenten S
+	ENTER : 13,			// Tangenten Enter
+	SPACE : 32,};			// Tangenten Space/blanksteg/mellanslag
 
 // Referens till aktuell canvas i html-dokumentet
 var gGameCanvas;
