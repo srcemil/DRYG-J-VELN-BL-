@@ -14,11 +14,6 @@ class LaserShot
 	//==========================================================================
 	// Konstruktor som skapar ett laser-objekt.
 	//==========================================================================
-/*
-	hit() {
-		return(this.x > x) && (this.x < x+this.width) && (y > y) && (y > y+h)// Ett boolean värde
-	}
-*/ // HP TESTING
 	constructor(length, width, speed) {
 
 		this.length = length;
@@ -44,12 +39,6 @@ class LaserShot
 	// Uppdaterar laserns tillstånd.
 	//==========================================================================
 	update() {
-/*
-		if(this.hit() == true) {
-			let health = document.getElementById("health")
-		health.value -= 10;
-		}
-*/ // HP UPDATE TEST
 		// Uppdatera position för lasern
 		if (this.y > 0) {
 			this.y = this.y - this.speed;
@@ -62,18 +51,14 @@ class LaserShot
 			if(this.y < theEnemy.y + 50){
 				if(this.x > theEnemy.x){
 					if(this.x < theEnemy.x + 50){
-						this.y = 0;
-						score += 10;
-						enemyHp -= 10;
-						console.log(score);
-						console.log("hit");
-						console.log(enemyHp);
+						this.y = 0; 			// Gör så att skottet inte fortsätter att åka och skada fienden
+						score += 10;			// Lägger till 10 poäng till spelarens "score"
+						enemyHp -= 10;			// Tar bort 10 hälsa från fienden
 
-					}
-				}
-			}
-		}
-
+	}
+	}
+	}
+	}
 	}
 
 	//==========================================================================
@@ -83,8 +68,8 @@ class LaserShot
 	{
 		if (this.y > 0)
 		{
-			ctx.fillStyle = "#FFFFFF";
-			ctx.fillRect(this.x - (this.width / 2), this.y - this.length, this.width, this.length);
+			ctx.fillStyle = "#FFFFFF"; 								// Färg på skottet
+			ctx.fillRect(this.x - (this.width / 2), this.y - this.length, this.width, this.length); // Rektangulär form med tidigare bestämda parametrar
 		}
 	}
 }
