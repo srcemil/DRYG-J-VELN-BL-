@@ -41,7 +41,7 @@ const gStates = {
 var gGameContext;			// Kontexten för spelet som renderas i vår canvas
 var gGameWidth;				// Spelfönstrets bredd
 var gGameHeight;			// Spelfönstrets höjd
-var gApp;					// Applikationen som itererande loop
+var gApp;				// Applikationen som itererande loop
 var gAppState;				// Huvudtillstånd i spelprogrammet
 var gAppTimeStep;			// Tiden mellan iterationer (uppdateringar) i applikationen
 var gAppStepCount;			// Räknare för antal iterationer som spel-loopen genomgått
@@ -49,16 +49,21 @@ var gAppStepCount;			// Räknare för antal iterationer som spel-loopen genomgå
 var pEnter = "Press Enter to Start";
 var pCmove = "WASD - move";
 var pCshoot = "Space - shoot";
-var pCpause = "press \"p\" to pause the game"; // HITTA något bättre
+var pCpause = "press \"p\" to pause the game";
 var pauseG = "The game is paused"
 var winScreen = "You win!"
-var score = 0; // Förutom den här som håller nummer
+// Håller nummer
+var score = 0;
 var enemyHp = 1000;
+// Ljudeffekter
+var endGame = new Audio("./JsLibrary/Sound/MixedSoundeffects/Applause.MP3"); // "Applause" ljudet
+endGame.src = "./JsLibrary/Sound/MixedSoundeffects/Applause.MP3";	     // Src till "Applause" ljudet
+endGame.volume = 0.1;							     // Volym på ljudet
+
 
 //******************* BEGIN Starship game **********************************
 var theEnemy;
 var theShip;
-// var imageObj = new Image();
 //******************* END Starship game ************************************
 
 //==========================================================================
@@ -75,8 +80,6 @@ function initialize() {
     gGameHeight = gGameCanvas.getAttribute("height");
 
 	//******************* BEGIN Starship game ******************************
-	// Set a target image
-	// imageObj.src = /*'Images/bengt.jpg';*/'Images/target.jpg'
 	//******************* END Starship game ********************************
 
 	// Kör igång spel-loopen.
@@ -113,10 +116,10 @@ function stopApp() {
 // Initialiserar en ny spelomgång.
 //==========================================================================
 function initNewGame() {
-	var spawnWidth = Math.floor((Math.random() * gGameWidth - 30)); // Slumpmässigt x värde på skeppet när det laddas in
-	var spawnHeight = Math.floor((Math.random() * gGameHeight - 30)); // Slumpmässigt y värde på skeppet när det laddas in
-	var enemySpawnWidth = (gGameWidth / 2) - 35; // Gör att fienden startar i mitten på x axeln
-	var enemySpawnHeight = (gGameHeight / 2) - 35; // Gör att fienden startar i mitten på y axeln
+	var spawnWidth = Math.floor((Math.random() * gGameWidth - 30)); 		// Slumpmässigt x värde på skeppet när det laddas in
+	var spawnHeight = Math.floor((Math.random() * gGameHeight - 30)); 		// Slumpmässigt y värde på skeppet när det laddas in
+	var enemySpawnWidth = (gGameWidth / 2) - 35; 					// Gör att fienden startar i mitten på x axeln
+	var enemySpawnHeight = (gGameHeight / 2) - 35; 					// Gör att fienden startar i mitten på y axeln
 	theShip = new Ship(spawnWidth, spawnHeight);
 	theEnemy = new enemy(enemySpawnWidth, enemySpawnHeight);
 }
@@ -131,17 +134,17 @@ function iterateApp() {
 
 		case gStates.STARTING :
 		initNewGame();
-		if(gKeysDown[gKeyCodes.ENTER]){ // Om en knapp är nere och det är ENTER knappen så körs satsen
-			gAppState = gStates.PLAYING; // Startat spelet
+		if(gKeysDown[gKeyCodes.ENTER]){ 						// Om en knapp är nere och det är ENTER knappen så körs satsen
+			gAppState = gStates.PLAYING; 						// Startat spelet
 		}
-		else{ // Om spelet inte spelar, så visas denna skärm
-			gGameContext.font = "20px Serif"; // Storlek och font
-	    gGameContext.fillStyle = "Black"; // Färg på texten
-	    gGameContext.fillText(pEnter, 47, 180); // Text och koordinater
-	    // Behöver ingen font eller fillstyle eftersom att det redan är bestämt
-	    gGameContext.fillText(pCmove, 47, 210); // Text och koordinater
-	    gGameContext.fillText(pCshoot, 47, 240); // Text och koordinater
-			gGameContext.fillText(pCpause, 47, 270);
+		else{ 										// Om spelet inte spelar, så visas denna skärm
+	    gGameContext.font = "20px Serif"; 							// Storlek och font
+	    gGameContext.fillStyle = "Black"; 							// Färg på texten
+	    gGameContext.fillText(pEnter, 47, 180); 						// Text och koordinater
+	    											// Behöver ingen font eller fillstyle eftersom att det redan är bestämt
+	    gGameContext.fillText(pCmove, 47, 210); 						// Text och koordinater för rörelse instruktioner
+	    gGameContext.fillText(pCshoot, 47, 240);  						// Text och koordinater för skjut instruktioner
+	    gGameContext.fillText(pCpause, 47, 270);  						// Text med koordinater för pause instruktioner
 	  }
 
 			//##############################################################
@@ -166,19 +169,20 @@ function iterateApp() {
 				// STARTING spelet
 				gAppState = gStates.PLAYING;
 			}
-			else {
-				gGameContext.font = "40px Serif"; // Storlek och font
-		    gGameContext.fillStyle = "Black"; // Färg på texten
-				gGameContext.fillText(pauseG, 37, 180); // Text och koordinater
+			else { 						 // Om inte spelet är igång så ska denna meny vara aktiv, en "pausmeny"
+				gGameContext.font = "40px Serif"; 	 // Storlek och font
+		    gGameContext.fillStyle = "Black"; 			 // Färg på texten
+				gGameContext.fillText(pauseG, 37, 180);  // Text och koordinater
 			}
 			break;
 
 		case gStates.PLAYING :
-			if (enemyHp <= 0){
-				gAppState = gStates.STOPPED;
-				gGameContext.font = "40px Serif"; // Storlek och font
-		    gGameContext.fillStyle = "Black"; // Färg på texten
-				gGameContext.fillText(winScreen, 37, 180); // Text och koordinater
+			if (enemyHp <= 0){ 					// Om fiendens hälsa är 0 eller mindr eså körs denna if sats
+				gAppState = gStates.STOPPED; 			// Spelet stoppas
+				gGameContext.font = "40px Serif"; 		// Storlek och font
+		    gGameContext.fillStyle = "Black"; 				// Färg på texten
+				gGameContext.fillText(winScreen, 37, 180);	// Text och koordinater
+				endGame.play(); 				// Ljudet endGame som tidigare deklarerats spelas upp
 			}
 			else if (gKeysDown[gKeyCodes.PMENU] == true) {
 				// Stoppa spelet
@@ -199,10 +203,9 @@ console.log(gKeyCodes); // visar bara alla keys i konsolen
 function update() {
 
 	//******************* BEGIN Starship game ******************************
-	theShip.update();
-	theEnemy.update();
+	theShip.update();  							// uppdaterar skeppet
+	theEnemy.update(); 					        	// uppdaterar fienden
 	//******************* END Starship game ********************************
-	//bulletCollision();
 	//######################################################################
 	//# OBS! Skriv din egen kod för uppdateringar här. Detta kan göras direkt
 	//#      eller genom anrop till funktioner eller metoder i objekt.
@@ -219,25 +222,18 @@ function update() {
 function draw(ctx) {
 
 	//******************* BEGIN Starship game ******************************
-	// Rita bakgrunden
-	//var background = new Image();
-	//background.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRWlZEnHEiAoPphTSDh3NOCY8ds_vtokCAJkJUvaE8YyCXqZB1i&usqp=CAU";
-	//background.load = function (){
-	//	ctx.drawImage(background, 0, 0)
-	//}
-	ctx.fillStyle = "#c2c5cc";
-	ctx.fillRect(0, 0, gGameWidth, gGameHeight);
 
-	// Rita målet
-	// ctx.drawImage(imageObj, 400, 50, 100, 100);
-	ctx.font = "15px Serif"; // Storlek och font
-	ctx.fillStyle = "white"; // Färg på texten
-	ctx.fillText("Score: " + score, 5, 15); // Utskrivna "poäng" med koordinater, vi har tidigare deklarerat variabeln score
-	ctx.fillText("Målet är att nå 1000 poäng", 380, 300); // Instruktioner för spelaren
+	ctx.fillStyle = "#c2c5cc"; 							// Bakgrundsfärg på canvas
+	ctx.fillRect(0, 0, gGameWidth, gGameHeight); 					// Det ritas ut en rektangel med de tidigare deklarerade parametrarna
+
+	ctx.font = "15px Serif"; 							// Storlek och font
+	ctx.fillStyle = "white"; 							// Färg på texten
+	ctx.fillText("Score: " + score, 5, 15); 		 			// Utskrivna "poäng" med koordinater, vi har tidigare deklarerat variabeln score
+	ctx.fillText("Målet är att nå 1000 poäng", 380, 300); 				// Instruktioner för spelaren
 
 	// Låt skeppet rita sig självt och sådant som skeppet ansvarar för.
-	theShip.draw(ctx);
-	theEnemy.draw(ctx);
+	theShip.draw(ctx); 								// Skeppet ritar ut sig själv enligt instruktioner från sin personliga fil
+	theEnemy.draw(ctx);								// Fienden ritar ut sig själv enligt instruktioner från sin personliga fil
 	//******************* END Starship game ********************************
 
 	//######################################################################
